@@ -1,0 +1,68 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { slugifyStr } from "@utils/slugify";
+// Markdown related imports
+import rehypeStringify from "rehype-stringify";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeExpressiveCode from "rehype-expressive-code";
+import { unified } from "unified";
+import { pluginCodeOutput } from "@fujocoded/expressive-code-output";
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkRehype)
+  .use(rehypeStringify)
+  .use(rehypeExpressiveCode, {
+    themes: ["github-light"],
+    frames: { showCopyToClipboardButton: true },
+    plugins: [pluginCodeOutput],
+  });
+
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  blog: CollectionEntry<"strapiPostsLoader">;
+}
+
+const { blog } = Astro.props;
+const { title } = blog.data;
+
+const p = await file.process(blog.data.blog_markdown);
+---
+
+<Layout title={title}>
+  <Header />
+  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
+    <button
+      class="focus-outline mb-2 mt-8 flex hover:opacity-75"
+      onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg"
+        ><path
+          d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
+        ></path>
+      </svg><span>Go back</span>
+    </button>
+  </div>
+  <main id="main-content">
+    <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
+    <article id="article" class="prose mx-auto mt-8 max-w-3xl">
+      <!-- <div set:html={mark.parse(blog.data.blog_markdown)} /> -->
+      <div set:html={String(p)} />
+    </article>
+
+    <Footer />
+  </main>
+</Layout>
+
+<style>
+  main {
+    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+  }
+  .post-title {
+    @apply text-2xl font-semibold text-skin-accent;
+  }
+</style>

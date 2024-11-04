@@ -1,0 +1,17 @@
+---
+import BlogDetails from "@layouts/BlogDetails.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const blogs = await getCollection("strapiPostsLoader");
+
+  return blogs.map(blog => ({
+    params: { slug: blog.data.slug },
+    props: { post: blog },
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<BlogDetails blog={post} />

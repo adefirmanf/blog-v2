@@ -1,6 +1,7 @@
 import { SITE } from "@config";
 import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
+import { strapiLoader } from "./strapiloader"
 
 const blog = defineCollection({
   type: "content_layer",
@@ -33,4 +34,11 @@ const blog = defineCollection({
     }),
 });
 
-export const collections = { blog };
+// Define the Strapi posts collection
+// This sets up a custom loader for Strapi content
+const strapiPostsLoader = defineCollection({
+  type: "content_layer",
+  loader: strapiLoader({ contentType: "blog-post" }),
+});
+
+export const collections = { blog, strapiPostsLoader };

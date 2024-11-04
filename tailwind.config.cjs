@@ -69,9 +69,6 @@ module.exports = {
             pre: {
               color: false,
             },
-            code: {
-              color: false,
-            },
           },
         },
       },

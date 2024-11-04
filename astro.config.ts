@@ -6,16 +6,18 @@ import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 
+import expressiveCode from "astro-expressive-code";
+
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
-  integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
-    react(),
-    sitemap(),
-  ],
+  integrations: [tailwind({
+    applyBaseStyles: false,
+  }), react(), sitemap(), expressiveCode(
+    {
+      themes: ['github-light', 'solarized-light'],
+    }
+  )],
   markdown: {
     remarkPlugins: [
       remarkToc,
