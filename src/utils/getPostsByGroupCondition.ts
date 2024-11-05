@@ -7,12 +7,19 @@ interface GroupFunction<T> {
 }
 
 const getPostsByGroupCondition = (
-  posts: CollectionEntry<"blog">[],
+  posts: CollectionEntry<"blog">[] | undefined,
   groupFunction: GroupFunction<CollectionEntry<"blog">>
 ) => {
+  if (!posts) {
+    throw new Error("Posts array is undefined");
+  }
+
   const result: Record<GroupKey, CollectionEntry<"blog">[]> = {};
   for (let i = 0; i < posts.length; i++) {
     const item = posts[i];
+    if (!item) {
+      continue;
+    }
     const groupKey = groupFunction(item, i);
     if (!result[groupKey]) {
       result[groupKey] = [];

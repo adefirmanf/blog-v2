@@ -11,6 +11,7 @@ import expressiveCode from "astro-expressive-code";
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
+  base: SITE.website,
   integrations: [tailwind({
     applyBaseStyles: false,
   }), react(), sitemap(), expressiveCode(

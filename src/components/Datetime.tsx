@@ -7,8 +7,8 @@ interface DatetimesProps {
 }
 
 interface EditPostProps {
-  editPost?: CollectionEntry<"blog">["data"]["editPost"];
-  postId?: CollectionEntry<"blog">["id"];
+  editPost?: CollectionEntry<"blog">["data"]["editPost"] | undefined;
+  postId?: CollectionEntry<"blog">["id"] | undefined;
 }
 
 interface Props extends DatetimesProps, EditPostProps {
