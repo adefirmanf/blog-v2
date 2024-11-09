@@ -7,16 +7,11 @@ interface Tag {
   tagName: string;
 }
 
-const getUniqueTags = (posts: CollectionEntry<"blog">[]) => {
+const getUniqueTags = (posts: CollectionEntry<"strapiPostsLoader">[]) => {
   const tags: Tag[] = posts
     .filter(postFilter)
-    .flatMap(post => post.data.tags)
-    .map(tag => ({ tag: slugifyStr(tag), tagName: tag }))
-    .filter(
-      (value, index, self) =>
-        self.findIndex(tag => tag.tag === value.tag) === index
-    )
-    .sort((tagA, tagB) => tagA.tag.localeCompare(tagB.tag));
+    .flatMap(post => post.data.blog_tags)
+    .map(tag => ({ tag: slugifyStr(tag.tag), tagName: slugifyStr(tag.tag) }))
   return tags;
 };
 

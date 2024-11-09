@@ -14,6 +14,11 @@ const welcomePage = defineCollection({
   loader: strapiSingleLoader({ contentType: "welcome-page" }),
 })
 
+const tags = defineCollection({
+  type: "content_layer",
+  loader: strapiLoader({ contentType: "blog-tag" }),
+})
+
 const blog = defineCollection({
   type: "content_layer",
   loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
@@ -48,4 +53,4 @@ const blog = defineCollection({
 });
 
 
-export const collections = { blog, strapiPostsLoader, welcomePage };
+export const collections = { blog, strapiPostsLoader, welcomePage, tags };

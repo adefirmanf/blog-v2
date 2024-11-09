@@ -31,7 +31,7 @@ export function strapiLoader({ contentType }: { contentType: string }): Loader {
 
       try {
         // Fetch and store the content
-        const data = await fetchFromStrapi(`/api/${contentType}s`);
+        const data = await fetchFromStrapi(`/api/${contentType}s?populate=*`);
         const posts = data?.data;
 
         if (!posts || !Array.isArray(posts)) {
@@ -147,18 +147,18 @@ function mapTypeToZodSchema(type: string, field: any): ZodTypeAny {
       }),
     richtext: () => z.string(),
     datetime: () => z.string().datetime(),
-    relation: () =>
-      z
-        .object({
-          relation: z.literal(field.relation),
-          target: z.literal(field.target),
-          configurable: z.boolean().optional(),
-          writable: z.boolean().optional(),
-          visible: z.boolean().optional(),
-          useJoinTable: z.boolean().optional(),
-          private: z.boolean().optional(),
-        })
-        .optional(),
+    relation: () => z.array(z.any()).optional(),
+      // z
+      //   .object({
+      //     relation: z.literal(field.relation),
+      //     target: z.literal(field.target),
+      //     configurable: z.boolean().optional(),
+      //     writable: z.boolean().optional(),
+      //     visible: z.boolean().optional(),
+      //     useJoinTable: z.boolean().optional(),
+      //     private: z.boolean().optional(),
+      //   })
+      //   .optional(),
     boolean: () => z.boolean(),
     number: () => z.number(),
     array: () => z.array(mapTypeToZodSchema(field.items.type, field.items)),
