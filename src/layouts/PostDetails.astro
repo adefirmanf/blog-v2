@@ -2,7 +2,8 @@
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import Tag from "@components/Tag.astro";
+import Markdown from "@components/Markdown.astro";
+// import Tag from "@components/Tag.astro";
 import Datetime from "@components/Datetime";
 import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
@@ -10,27 +11,24 @@ import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
 
 export interface Props {
-  post: CollectionEntry<"blog">;
-  posts: CollectionEntry<"blog">[];
+  post: CollectionEntry<"strapiPostsLoader">;
+  posts: CollectionEntry<"strapiPostsLoader">[];
 }
 
 const { post, posts } = Astro.props;
 
 const {
   title,
-  author,
+  slug,
   description,
-  ogImage,
-  canonicalURL,
-  pubDatetime,
-  modDatetime,
-  tags,
-  editPost,
+  blog_markdown,
+  cover_image,
+  updatedAt,
+  createdAt,
+  blog_tags,
 } = post.data;
 
-const { Content } = await post.render();
-
-const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
+const ogImageUrl = typeof cover_image === "string" ? cover_image : "";
 const ogUrl = new URL(
   ogImageUrl ?? `/posts/${slugifyStr(title)}.png`,
   Astro.url.origin
@@ -38,24 +36,22 @@ const ogUrl = new URL(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const layoutProps: Partial<any> = {
   title: `${title} | ${SITE.title}`,
-  author,
   description,
-  pubDatetime,
-  modDatetime,
-  canonicalURL,
+  createdAt,
+  updatedAt,
+  slug,
   ogImage: ogUrl,
   scrollSmooth: true,
 };
 
 /* ========== Prev/Next Posts ========== */
 
-const allPosts = posts.map(({ data: { title }, slug }) => ({
+const allPosts = posts.map(({ data: { title, slug } }) => ({
   slug,
   title,
 }));
 
-const currentPostIndex = allPosts.findIndex(a => a.slug === post.slug);
-
+const currentPostIndex = allPosts.findIndex(a => a.slug === a.slug);
 const prevPost = currentPostIndex !== 0 ? allPosts[currentPostIndex - 1] : null;
 const nextPost =
   currentPostIndex !== allPosts.length ? allPosts[currentPostIndex + 1] : null;
@@ -79,19 +75,18 @@ const nextPost =
   <main id="main-content">
     <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
     <Datetime
-      pubDatetime={pubDatetime}
-      modDatetime={modDatetime}
+      pubDatetime={createdAt}
+      modDatetime={updatedAt}
       size="lg"
       className="my-2"
-      editPost={editPost}
-      postId={post.id}
     />
     <article id="article" class="prose mx-auto mt-8 max-w-3xl">
-      <Content />
+      <Markdown markdownContent={blog_markdown} />
     </article>
 
     <ul class="my-8">
-      {tags.map(tag => <Tag tag={slugifyStr(tag)} />)}
+      {blog_tags}
+      <!-- {tags.map(tag => <Tag tag={slugifyStr(tag)} />)} -->
     </ul>
 
     <div

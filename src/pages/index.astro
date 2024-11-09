@@ -3,14 +3,17 @@ import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
+import Markdown from "@components/Markdown.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import { SITE, SOCIALS } from "@config";
+import { getEntry } from "astro:content";
 
-const posts = await getCollection("blog");
+const posts = await getCollection("strapiPostsLoader");
+const welcome = await getEntry("welcomePage", "welcome-page");
 
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
@@ -24,7 +27,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   <main id="main-content">
     <section id="hero">
       <h1>
-        I don't like too much yapping
+        {welcome.data.title}
         <a
           target="_blank"
           href="/rss.xml"
@@ -43,17 +46,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         </a>
       </h1>
 
-      <p>
-        Just a tech-guy that still grinding to ship tools for food. Stuck in
-        golang and nodejs. Willing to learn elixir - (05/11/2024) <br />
-      </p>
-      <p>
-        Dear recruiters, <br />
-        Currently I am looking for an Go or Node.js role. If you have any, please
-        reach me out. Prefer to working remotely or overseas <br /><i
-          >(currently I'm at Indonesia).</i
-        >
-      </p>
+      <Markdown markdownContent={welcome.data.content} />
       {
         // only display if at least one social link is enabled
         socialCount > 0 && (
@@ -81,9 +74,9 @@ const socialCount = SOCIALS.filter(social => social.active).length;
           <section id="featured">
             <h2>Featured</h2>
             <ul>
-              {featuredPosts.map(({ data, slug }) => (
+              {featuredPosts.map(({ data }) => (
                 <Card
-                  href={`/posts/${slug}/`}
+                  href={`/posts/${data.slug}/`}
                   frontmatter={data}
                   secHeading={false}
                 />
@@ -101,10 +94,10 @@ const socialCount = SOCIALS.filter(social => social.active).length;
           <h2>Recent Posts</h2>
           <ul>
             {recentPosts.map(
-              ({ data, slug }, index) =>
+              ({ data }, index) =>
                 index < SITE.postPerIndex && (
                   <Card
-                    href={`/posts/${slug}/`}
+                    href={`/posts/${data.slug}/`}
                     frontmatter={data}
                     secHeading={false}
                   />

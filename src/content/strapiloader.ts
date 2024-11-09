@@ -75,6 +75,55 @@ export function strapiLoader({ contentType }: { contentType: string }): Loader {
   };
 }
 
+export function strapiSingleLoader({ contentType }: { contentType: string }) :Loader{
+  return {
+    name: "strapiSingleLoader",
+    load: async function (this: Loader, {meta, store, logger}) {
+      const lastSynced = meta.get("lastSynced");
+
+      // Avoid frequent syncs
+      if (lastSynced && Date.now() - Number(lastSynced) < SYNC_INTERVAL) {
+        logger.info("Skipping Strapi sync");
+        return;
+      }
+
+      logger.info("Fetching posts from Strapi");
+
+      try {
+        // Fetch and store the content
+        const data = await fetchFromStrapi(`/api/${contentType}`);
+        const posts = data?.data;
+
+        const schemaOrFn = this.schema;
+        if (!schemaOrFn) {
+          throw new Error("Schema is not defined");
+        }
+        const schema =
+          typeof schemaOrFn === "function" ? await schemaOrFn() : schemaOrFn;
+        if (!(schema instanceof z.ZodType)) {
+          throw new Error("Invalid schema: expected a Zod schema");
+        }
+
+        store.clear();
+        store.set({ id: contentType, data: posts });
+
+        } catch(error){
+          logger.error(
+            `Error loading Strapi content: ${(error as Error).message}`
+          );
+        }
+    },
+    schema: async () => {
+      const data = await fetchFromStrapi(
+        `/get-strapi-schema/schema/${contentType}`
+      );
+      if (!data?.attributes) {
+        throw new Error("Invalid schema data received from Strapi");
+      }
+      return generateZodSchema(data.attributes);
+    },
+  }
+}
 /**
  * Maps Strapi field types to Zod schema types
  * @param type The Strapi field type

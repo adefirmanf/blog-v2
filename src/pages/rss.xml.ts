@@ -4,17 +4,17 @@ import getSortedPosts from "@utils/getSortedPosts";
 import { SITE } from "@config";
 
 export async function GET() {
-  const posts = await getCollection("blog");
+  const posts = await getCollection("strapiPostsLoader");
   const sortedPosts = getSortedPosts(posts);
   return rss({
     title: SITE.title,
     description: SITE.desc,
     site: SITE.website,
-    items: sortedPosts.map(({ data, slug }) => ({
-      link: `posts/${slug}/`,
+    items: sortedPosts.map(({ data }) => ({
+      link: `posts/${data.slug}/`,
       title: data.title,
       description: data.description,
-      pubDate: new Date(data.modDatetime ?? data.pubDatetime),
+      pubDate: new Date(data.updatedAt ?? data.createdAt),
     })),
   });
 }

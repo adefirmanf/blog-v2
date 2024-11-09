@@ -10,7 +10,7 @@ import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 
 export interface Props {
-  page: Page<CollectionEntry<"blog">>;
+  page: Page<CollectionEntry<"strapiPostsLoader">>;
   tag: string;
   tagName: string;
 }
@@ -28,8 +28,8 @@ const { page, tag, tagName } = Astro.props;
     <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
     <ul>
       {
-        page.data.map(({ data, slug }) => (
-          <Card href={`/posts/${slug}/`} frontmatter={data} />
+        page.data.map(({ data }) => (
+          <Card href={`/posts/${data.slug}/`} frontmatter={data} />
         ))
       }
     </ul>

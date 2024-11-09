@@ -9,15 +9,18 @@ import SearchBar from "@components/Search";
 import getSortedPosts from "@utils/getSortedPosts";
 
 // Retrieve all published articles
-const posts = await getCollection("blog", ({ data }) => !data.draft);
+const posts = await getCollection(
+  "strapiPostsLoader",
+  ({ data }) => !data.archive
+);
 const sortedPosts = getSortedPosts(posts);
 
 // List of items to search in
-const searchList = sortedPosts.map(({ data, slug }) => ({
+const searchList = sortedPosts.map(({ data }) => ({
   title: data.title,
   description: data.description,
   data,
-  slug,
+  slug: data.slug,
 }));
 ---
 

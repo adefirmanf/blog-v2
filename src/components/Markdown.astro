@@ -1,0 +1,28 @@
+---
+// Markdown related imports
+import rehypeStringify from "rehype-stringify";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeExpressiveCode from "rehype-expressive-code";
+import { unified } from "unified";
+import { pluginCodeOutput } from "@fujocoded/expressive-code-output";
+
+export interface Props {
+  markdownContent: string;
+  codeTheme?: ["github-light", "github-dark"];
+}
+const { markdownContent, codeTheme } = Astro.props;
+const rehype = unified()
+  .use(remarkParse)
+  .use(remarkRehype)
+  .use(rehypeStringify)
+  .use(rehypeExpressiveCode, {
+    themes: codeTheme,
+    frames: { showCopyToClipboardButton: true },
+    plugins: [pluginCodeOutput],
+  });
+
+const content = await rehype.process(markdownContent);
+---
+
+<div set:html={content} />

@@ -57,9 +57,13 @@ export default function Datetime({
 }
 
 const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
-  const myDatetime = new Date(
+  let myDatetime = new Date(
     modDatetime && modDatetime > pubDatetime ? modDatetime : pubDatetime
   );
+
+  if (isNaN(myDatetime.getTime())){
+    myDatetime = new Date()
+  }
 
   const date = myDatetime.toLocaleDateString(LOCALE.langTag, {
     year: "numeric",
