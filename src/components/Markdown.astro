@@ -9,23 +9,28 @@ import remarkGfm from "remark-gfm";
 import rehypeExpressiveCode from "rehype-expressive-code";
 import { unified } from "unified";
 import { pluginCodeOutput } from "@fujocoded/expressive-code-output";
+import getTheme from "@utils/getTheme";
 
 export interface Props {
   markdownContent: string;
   codeTheme?: ["github-light", "github-dark"];
 }
-const { markdownContent, codeTheme } = Astro.props;
+const theme = getTheme();
+
+const { markdownContent } = Astro.props;
 const rehype = unified()
   .use(remarkParse)
   .use(remarkHeaderId, { defaults: true, uniqueDefaults: true })
   .use(remarkToc, {
     heading: "Table of Contents",
     tight: true,
+    useDarkModeMediaQuery: true,
   })
   .use(remarkGfm)
   .use(remarkRehype)
   .use(rehypeExpressiveCode, {
-    themes: codeTheme,
+    themes:
+      theme === "dark" ? ["github-dark-default"] : ["github-light-default"],
     frames: { showCopyToClipboardButton: true },
     plugins: [pluginCodeOutput],
   })

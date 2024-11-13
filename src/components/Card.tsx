@@ -1,5 +1,6 @@
 import { slugifyStr } from "@utils/slugify";
 import Datetime from "./Datetime";
+import "@styles/custom.css";
 import type { CollectionEntry } from "astro:content";
 
 export interface Props {
@@ -9,7 +10,7 @@ export interface Props {
 }
 
 export default function Card({ href, frontmatter, secHeading = true }: Props) {
-  const { title, updatedAt, createdAt, description } = frontmatter;
+  const { title, updatedAt, createdAt, description, blog_tags } = frontmatter;
 
   const headerProps = {
     style: { viewTransitionName: slugifyStr(title) },
@@ -28,6 +29,10 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
           <h3 {...headerProps}>{title}</h3>
         )}
       </a>
+      
+      {blog_tags?.some(t => t.tag === "1-minute") && (
+        <a className="ml-10 gumroad-button" href="/tags/1-minute">1 Minute Series</a>
+      )}
       <Datetime pubDatetime={updatedAt} modDatetime={createdAt} />
       <p>{description}</p>
     </li>

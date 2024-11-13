@@ -81,7 +81,10 @@ const nextPost =
       className="my-2"
     />
     <article id="article" class="prose mx-auto mt-8 max-w-3xl">
-      <Markdown markdownContent={blog_markdown} />
+      <Markdown
+        markdownContent={blog_markdown}
+        codeTheme={["github-light", "github-dark"]}
+      />
     </article>
 
     <ul class="my-8">

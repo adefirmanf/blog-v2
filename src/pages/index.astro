@@ -46,7 +46,10 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         </a>
       </h1>
 
-      <Markdown markdownContent={welcome.data.content} />
+      <Markdown
+        markdownContent={welcome.data.content}
+        codeTheme={["github-light", "github-dark"]}
+      />
       {
         // only display if at least one social link is enabled
         socialCount > 0 && (
@@ -109,6 +112,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     }
 
     <div class="all-posts-btn-wrapper">
+      <LinkButton href="/tags/1-minute"> 1 Minute Series | </LinkButton>
       <LinkButton href="/posts/">
         All Posts
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -152,6 +156,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       @apply pb-6 pt-12;
     }
     #featured h2,
+    #one-minute-series h2,
     #recent-posts h2 {
       @apply text-2xl font-semibold tracking-wide;
     }
