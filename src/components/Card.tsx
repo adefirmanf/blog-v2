@@ -28,13 +28,13 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
         ) : (
           <h3 {...headerProps}>{title}</h3>
         )}
-      </a>
-      
-      {blog_tags?.some(t => t.tag === "1-minute") && (
-        <a className="ml-10 gumroad-button" href="/tags/1-minute">1 Minute Series</a>
-      )}
+      </a>   
       <Datetime pubDatetime={updatedAt} modDatetime={createdAt} />
       <p>{description}</p>
+      {blog_tags?.some(t => t.tag === "1-minute") && (
+        <a className="m-2 ml-0 inline-block gumroad-button" href="/tags/1-minute">#1_Minute_Series</a>
+      )} 
+      
     </li>
   );
 }
