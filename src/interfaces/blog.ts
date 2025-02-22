@@ -6,5 +6,6 @@ export default interface Blog{
         updatedAt: string;
         publishedAt: string;
         published: boolean;
+        deletedAt: string;
         blog_markdown: string;
 }
