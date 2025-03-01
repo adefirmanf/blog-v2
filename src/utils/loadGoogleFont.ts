@@ -3,8 +3,8 @@ import type { FontStyle, FontWeight } from "satori";
 export type FontOptions = {
   name: string;
   data: ArrayBuffer;
-  weight: FontWeight
-  style: FontStyle
+  weight: FontWeight;
+  style: FontStyle;
 };
 
 async function loadGoogleFont(

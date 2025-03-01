@@ -75,10 +75,14 @@ export function strapiLoader({ contentType }: { contentType: string }): Loader {
   };
 }
 
-export function strapiSingleLoader({ contentType }: { contentType: string }) :Loader{
+export function strapiSingleLoader({
+  contentType,
+}: {
+  contentType: string;
+}): Loader {
   return {
     name: "strapiSingleLoader",
-    load: async function (this: Loader, {meta, store, logger}) {
+    load: async function (this: Loader, { meta, store, logger }) {
       const lastSynced = meta.get("lastSynced");
 
       // Avoid frequent syncs
@@ -106,12 +110,11 @@ export function strapiSingleLoader({ contentType }: { contentType: string }) :Lo
 
         store.clear();
         store.set({ id: contentType, data: posts });
-
-        } catch(error){
-          logger.error(
-            `Error loading Strapi content: ${(error as Error).message}`
-          );
-        }
+      } catch (error) {
+        logger.error(
+          `Error loading Strapi content: ${(error as Error).message}`
+        );
+      }
     },
     schema: async () => {
       const data = await fetchFromStrapi(
@@ -122,7 +125,7 @@ export function strapiSingleLoader({ contentType }: { contentType: string }) :Lo
       }
       return generateZodSchema(data.attributes);
     },
-  }
+  };
 }
 /**
  * Maps Strapi field types to Zod schema types
@@ -148,17 +151,17 @@ function mapTypeToZodSchema(type: string, field: any): ZodTypeAny {
     richtext: () => z.string(),
     datetime: () => z.string().datetime(),
     relation: () => z.array(z.any()).optional(),
-      // z
-      //   .object({
-      //     relation: z.literal(field.relation),
-      //     target: z.literal(field.target),
-      //     configurable: z.boolean().optional(),
-      //     writable: z.boolean().optional(),
-      //     visible: z.boolean().optional(),
-      //     useJoinTable: z.boolean().optional(),
-      //     private: z.boolean().optional(),
-      //   })
-      //   .optional(),
+    // z
+    //   .object({
+    //     relation: z.literal(field.relation),
+    //     target: z.literal(field.target),
+    //     configurable: z.boolean().optional(),
+    //     writable: z.boolean().optional(),
+    //     visible: z.boolean().optional(),
+    //     useJoinTable: z.boolean().optional(),
+    //     private: z.boolean().optional(),
+    //   })
+    //   .optional(),
     boolean: () => z.boolean(),
     number: () => z.number(),
     array: () => z.array(mapTypeToZodSchema(field.items.type, field.items)),
@@ -192,7 +195,7 @@ function generateZodSchema(attributes: Record<string, any>): ZodObject<any> {
 async function fetchFromStrapi(
   path: string,
   params?: Record<string, string>
-): Promise<any> { 
+): Promise<any> {
   const url = new URL(path, STRAPI_BASE_URL);
 
   if (params) {
@@ -203,10 +206,10 @@ async function fetchFromStrapi(
 
   try {
     const response = await fetch(url.href, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${ import.meta.env.STRAPI_TOKEN}`,
-        }
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${import.meta.env.STRAPI_TOKEN}`,
+      },
     });
     if (!response.ok) {
       throw new Error(`Failed to fetch from Strapi: ${response.statusText}`);
