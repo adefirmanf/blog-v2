@@ -86,7 +86,6 @@ const nextPost =
         codeTheme={["github-light", "github-dark"]}
       />
     </article>
-
     <ul class="my-8">
       {blog_tags?.map(tag => <Tag tag={slugifyStr(tag.tag)} />)}
       <!-- {tags.map(tag => <Tag tag={slugifyStr(tag)} />)} -->
@@ -109,7 +108,22 @@ const nextPost =
 
       <ShareLinks />
     </div>
-
+    <script
+      src="https://giscus.app/client.js"
+      data-repo="adefirmanf/blog-v2"
+      data-repo-id="R_kgDONKWXMA"
+      data-category="General"
+      data-category-id="DIC_kwDONKWXMM4CndoS"
+      data-mapping="url"
+      data-strict="0"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="bottom"
+      data-theme="preferred_color_scheme"
+      data-lang="en"
+      crossorigin="anonymous"
+      async
+    ></script>
     <hr class="my-6 border-dashed" />
 
     <!-- Previous/Next Post Buttons -->
