@@ -11,13 +11,16 @@ import expressiveCode from "astro-expressive-code";
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
-  integrations: [tailwind({
-    applyBaseStyles: false,
-  }), react(), sitemap(), expressiveCode(
-    {
-      themes: ['github-light', 'solarized-light'],
-    }
-  )],
+  integrations: [
+    tailwind({
+      applyBaseStyles: false,
+    }),
+    react(),
+    sitemap(),
+    expressiveCode({
+      themes: ["github-light", "solarized-light"],
+    }),
+  ],
   markdown: {
     remarkPlugins: [
       remarkToc,

@@ -11,7 +11,7 @@ const getUniqueTags = (posts: CollectionEntry<"strapiPostsLoader">[]) => {
   const tags: Tag[] = posts
     .filter(postFilter)
     .flatMap(post => post.data.blog_tags)
-    .map(tag => ({ tag: slugifyStr(tag.tag), tagName: slugifyStr(tag.tag) }))
+    .map(tag => ({ tag: slugifyStr(tag.tag), tagName: slugifyStr(tag.tag) }));
   return tags;
 };
 

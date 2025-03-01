@@ -61,8 +61,8 @@ const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
     modDatetime && modDatetime > pubDatetime ? modDatetime : pubDatetime
   );
 
-  if (isNaN(myDatetime.getTime())){
-    myDatetime = new Date()
+  if (isNaN(myDatetime.getTime())) {
+    myDatetime = new Date();
   }
 
   const date = myDatetime.toLocaleDateString(LOCALE.langTag, {
