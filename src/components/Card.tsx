@@ -31,7 +31,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
         )}
       </a>
       <br />
-      {blog_tags.map(t => (
+      {blog_tags?.map(t => (
         <a
           href={`/tags/${slugifyStr(t.tag)}`}
           key={t.tag}

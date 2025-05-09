@@ -7,7 +7,6 @@ interface BadgeProps {
 export default function Badges({
   color,
   text,
-  icon
 }: BadgeProps) {
 return (
     <div>
