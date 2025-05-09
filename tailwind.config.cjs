@@ -17,7 +17,6 @@ module.exports = {
     screens: {
       sm: "640px",
     },
-
     extend: {
       textColor: {
         skin: {
@@ -60,7 +59,28 @@ module.exports = {
         }
       },
       fontFamily: {
-        mono: ["IBM Plex Mono", "monospace"],
+        sans: [
+          "Inter",
+          "ui-sans-serif",
+          //"system-ui",
+          //"sans-serif",
+          //"Apple Color Emoji",
+          //"Segoe UI Emoji",
+          //"Segoe UI Symbol",
+          //"Noto Color Emoji",
+        ],
+        mono: [
+          "Inter",
+          "ui-sans-serif",
+          //"system-ui",
+          //"sans-serif",
+          //"Apple Color Emoji",
+          //"Segoe UI Emoji",
+          //"Segoe UI Symbol",
+          //"Noto Color Emoji",
+        ],
+        //mono: ["ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"]
+        //mono: ["IBM Plex Mono", "monospace"],
       },
 
       typography: {

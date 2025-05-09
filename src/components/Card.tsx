@@ -1,5 +1,6 @@
 import { slugifyStr } from "@utils/slugify";
 import Datetime from "./Datetime";
+import Badges from "./Badges";
 import "@styles/custom.css";
 import type { CollectionEntry } from "astro:content";
 
@@ -29,16 +30,22 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
           <h3 {...headerProps}>{title}</h3>
         )}
       </a>
-      <Datetime pubDatetime={updatedAt} modDatetime={createdAt} />
-      <p>{description}</p>
-      {blog_tags?.some(t => t.tag === "1-minute") && (
+      <br />
+      {blog_tags?.map(t => (
         <a
-          className="m-2 ml-0 inline-block gumroad-button"
-          href="/tags/1-minute"
+          href={`/tags/${slugifyStr(t.tag)}`}
+          key={t.tag}
         >
-          #1_Minute_Series
+          <div className="inline-block mr-2">
+            { t.tag == "1-minute" ? <Badges color="purple" text="1 Minute Series" icon="🕑" /> : <Badges color="purple" text={"#" + t.tag} icon="📚" />
+            }
+          </div>
         </a>
-      )}
+      ))}
+      <p className="leading-7">{description}</p>
+      <div className="inline-block mr-2 float">
+            <Datetime pubDatetime={updatedAt} modDatetime={createdAt} />
+      </div>
     </li>
   );
 }
